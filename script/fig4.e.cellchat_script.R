@@ -2,7 +2,7 @@
 library(CellChat)
 library(Seurat)
 
-seu=readRDS("MonoDC_dc.only.rds")
+seu=readRDS("DC_ent_singlet.rds")
 #seu=readRDS(path)
 
 DefaultAssay(seu) <- "RNA"
