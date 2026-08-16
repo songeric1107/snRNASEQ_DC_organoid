@@ -25,9 +25,6 @@ set.seed(1234)
 
 
 
-suppressMessages(library("dplyr"))
-suppressMessages(library("Matrix"))
-
 suppressMessages(library(SeuratWrappers))
 library(future)
 library(future.apply)
