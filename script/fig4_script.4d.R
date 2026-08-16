@@ -5,7 +5,8 @@ dc1 <- DietSeurat(dc, assays = "RNA")
 # x = epi,
 #y = dc1
 # add.cell.ids = c("s1", "s2", "s3", "s4"))
-
+dc1=readRDS("MonoDC_dc.only.rds")
+dc2=readRDS("dc.singlet.rds")
 
 dc1 <- SCTransform(dc1, vst.flavor = "v2", verbose = FALSE)
 dc2 <- SCTransform(epi, vst.flavor = "v2", verbose = FALSE)
@@ -68,38 +69,6 @@ saveRDS(integrated,"input_fig4d.rds")
 
 
 
-seu=integrated
-
-DefaultAssay(seu) <- "RNA"
-
-data.input <- GetAssayData(seu, assay = "RNA", layer = "data")
-meta <- seu@meta.data[, "celltype.final", drop = FALSE]
-colnames(meta) <- "celltype.final"
-
-cc <- createCellChat(object = data.input, meta = meta, group.by = "celltype.final")
-cc@DB <- CellChatDB.human
-
-cc <- subsetData(cc)
-cc <- identifyOverExpressedGenes(cc)
-cc <- identifyOverExpressedInteractions(cc)
-cc <- computeCommunProb(cc)
-cc <- filterCommunication(cc, min.cells = 10)
-cc <- computeCommunProbPathway(cc)
-cc <- aggregateNet(cc)
-
-cellchat=cc
-
-
-df.net <- subsetCommunication(cellchat)
-write.table(df.net,"cellchat.result.txt",sep="\t",quote=F)
-
-
-cellchat@net$count <- rename_dimnames(cellchat@net$count)
-cellchat@net$weight <- rename_dimnames(cellchat@net$weight)
-
-
-
-saveRDS(cc,"dc_epi.input.cellchat.2026.rds")
 
 
 
