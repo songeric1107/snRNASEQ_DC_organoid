@@ -284,9 +284,9 @@ ElbowPlot(DC_ent)
 dev.off()
 
 DC_ent<- FindNeighbors(DC_ent, dims = 1:30)
-DC_ent <- FindClusters(DC_ent, renaivelution = 1.5)
+DC_ent <- FindClusters(DC_ent, resolution = 0.5)
 DC_ent <- RunUMAP(object = DC_ent,
-              dims =  1:30)
+              dims =  1:20)
 
 
 library(DoubletFinder)
