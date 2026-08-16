@@ -21,7 +21,7 @@ library(dplyr)
 # Set seed for reproducibility
 set.seed(1234)
 
-monodc=readRDS("dc.singlet.rds")
+monodc=readRDS("mono.dc.only.rds")
 
 Idents(monodc)=monodc$celltype_cluster
 
