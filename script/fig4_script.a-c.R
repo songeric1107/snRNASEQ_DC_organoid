@@ -20,8 +20,8 @@ library(dplyr)
 
 # Set seed for reproducibility
 set.seed(1234)
-setwd("/local/projects-t3/BTRAN/analysis/bma_project/snrna_bing_1106/integrate_two_DC_anchor.base/result_813/result_825/result_825/")
-monodc=readRDS("/local/projects-t3/BTRAN/analysis/bma_project/snrna_bing_1106/integrate_two_DC_anchor.base/result_813/result_825/result_825/monol.DC.ann.901.rds")
+
+monodc=readRDS("monol.DC.input.rds")
 
 Idents(monodc)=monodc$seurat_clusters
 monodc <- RenameIdents(monodc,
@@ -51,7 +51,7 @@ dev.off()
 
 monodc$cluster_annot.new3=Idents(monodc)
 
-saveRDS(monodc,"monodc.anno.2026.rds")
+
 
 
 Idents(monodc)=monodc$cluster_annot.new3
@@ -85,16 +85,14 @@ dev.off()
 
 
 
-monodc=readRDS("/Volumes/projects-t3/BTRAN/analysis/bma_project/snrna_bing_1106/integrate_two_DC_anchor.base/result_813/result_825/result_825/result_2026/new_result_3.3_2026/monodc.anno.2026.rds")
 
-obj2=monodc
+
 
 # Find neighbors and clusters
-Idents(obj2)=obj2$cluster_annot.new3
-expr <- GetAssayData(obj2, layer = "data", assay = "RNA")  # normalized log data
+Idents(monodc)=monodc$cluster_annot.new3
+expr <- GetAssayData(monodc, layer = "data", assay = "RNA")  # normalized log data
 
-# If using a Seurat object
-library(Seurat)
+
 cell_types <- monodc$cluster_annot.new3
 
 
