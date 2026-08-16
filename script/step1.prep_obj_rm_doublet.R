@@ -252,7 +252,7 @@ saveRDS(dc.not.no_epcam,"dc.singlet.rds")
 
 
 DC_ent=obj.split[[2]]
-DC_ent <- subset(DC_ent, subset = nFeature_RNA > 200 & nFeature_RNA < 7500 & mt_perc < 5)
+DC_ent <- subset(DC_ent, subset = nFeature_RNA > 200 & nFeature_RNA < 6000 & mt_perc < 10)
 #FilterCells(DC,subset.names = c("nFeature_RNA", "mt_perc"),low.thresholds = c(200, -Inf), high.thresholds = c(5000, 0.15))
 DC_ent<- NormalizeData(object = DC_ent, verbose = FALSE)
 #DC <- NormalizeData(DC)
