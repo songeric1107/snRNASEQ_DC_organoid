@@ -21,18 +21,9 @@ library(dplyr)
 # Set seed for reproducibility
 set.seed(1234)
 
-monodc=readRDS("monol.DC.input.rds")
+monodc=readRDS("dc.singlet.rds")
 
-Idents(monodc)=monodc$seurat_clusters
-monodc <- RenameIdents(monodc,
-                       `0` = "Tissue−resident inflammatory cDC2",
-                       `1` = "Tissue−resident inflammatory cDC2",
-                       `2` = "Migratory inflammatory cDC2",
-                       `3` = "Tissue−resident inflammatory cDC2",
-                       `4` = "Migratory inflammatory cDC2",
-                       `5` = "Migratory LAMP3hi cDC2",
-                       `6` = "Undefined DCs"
-)
+Idents(monodc)=monodc$celltype_cluster
 
 
 cols_dc <- c(
@@ -51,10 +42,6 @@ dev.off()
 
 monodc$cluster_annot.new3=Idents(monodc)
 
-
-
-
-Idents(monodc)=monodc$cluster_annot.new3
 # 
 # monodc.split.meta <- all.not@meta.data[
 #   which(all.not@meta.data$type == "Monol.+DC"),]
@@ -86,7 +73,7 @@ dev.off()
 
 
 
-
+monodc$cluster_annot.new3=monodc$celltype_cluster
 
 # Find neighbors and clusters
 Idents(monodc)=monodc$cluster_annot.new3
