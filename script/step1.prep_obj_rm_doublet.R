@@ -378,6 +378,21 @@ DC_ent_singlet <- subset(DC_ent, subset = doublet_status == "Singlet")
 
 saveRDS(DC_ent_singlet,"DC_ent_singlet.rds")
 
-
-
+b2.noep<- subset(DC_ent_singlet, subset = EPCAM == 0)
 #annotate celltype
+cluster_labels <- c(
+  "0" = "Tissue−resident inflammatory cDC2",
+  "1" = "Tissue−resident inflammatory cDC2",
+  "2" = "Migratory inflammatory cDC2",
+  "3" = "Tissue-resident inflammatory cDC2",
+  "4" = "Migratory inflammatory cDC2",
+  "5" = "Migratory LAMP3hi cDC2",
+  "6" = "Undefined DCs"
+)
+
+b2.noep$cluster_annot1 <- unname(
+  cluster_labels[as.character(b2.noep$seurat_clusters)]
+)
+
+
+saveRDS(b2.noep,"MonoDC_dc.only.rds")
