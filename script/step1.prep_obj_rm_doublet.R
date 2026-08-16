@@ -127,13 +127,6 @@ dc=DC%>%Seurat::NormalizeData(verbose = FALSE) %>%
   ScaleData(verbose = FALSE)
 ###52338-->52182 left
 
-C <- naive@assays$RNA@counts
-C <- Matrix::t(Matrix::t(C)/Matrix::colSums(C)) * 100
-most_expressed1 <- order(apply(C, 1, median), decreasing = T)[20:1]
-
-C2 <- dc1@assays$RNA@counts
-C2 <- Matrix::t(Matrix::t(C2)/Matrix::colSums(C2)) * 100
-most_expressed2 <- order(apply(C2, 1, median), decreasing = T)[20:1]
 
 
 C3 <- dc@assays$RNA@counts
@@ -194,20 +187,6 @@ dc <- RunUMAP(object = dc,
 
 
 
-
-saveRDS(dc,"dc.umap.rds")
-
-
-
-pdf("umap_dim30.dc.pdf")
-#TSNEPlot(object = DataNorm, do.label = T,group.by="orig.ident")
-p=DimPlot(object = dc, reduction = "umap")
-print(p)
-#ggsave(p,paste(samples[i],"_umap_preCCA.pdf",sep=""))
-dev.off()
-
-
-
 # Retrieve raw EPCAM counts
 epcam_counts <- FetchData(
   dc,
@@ -232,53 +211,41 @@ library(Seurat)
 # Make seurat_clusters the active identity
 Idents(dc.not.no_epcam) <- "seurat_clusters"
 
-# Cluster-to-cell-type mapping
-cluster_names <- c(
-  "0"  = "Tissue-resident regulatory cDC2",
-  "1"  = "Migratory LAMP3int cDC2",
-  "2"  = "Tissue-resident inflammatory cDC2",
-  "3"  = "Tissue-resident inflammatory cDC2",
-  "4"  = "Tissue-resident inflammatory cDC2",
-  "5"  = "Tissue-resident regulatory cDC2",
-  "6"  = "Tissue-resident inflammatory cDC2",
-  "7"  = "Tissue-resident inflammatory cDC2",
-  "8"  = "Tissue-resident inflammatory cDC2",
-  "9"  = "Tissue-resident inflammatory cDC2",
-  "10" = "Migratory LAMP3hi cDC2",
-  "11" = "Migratory LAMP3hi cDC2",
-  "12" = "Tissue-resident inflammatory cDC2",
-  "13" = "Tissue-resident inflammatory cDC2",
-  "14" = "Migratory LAMP3hi cDC2",
-  "15" = "Migratory LAMP3hi cDC2",
-  "16" = "Tissue-resident inflammatory cDC2",
-  "17" = "Migratory LAMP3lo cDC2",
-  "18" = "Migratory LAMP3hi cDC2",
-  "19" = "Tissue-resident inflammatory cDC2",
-  "20" = "Migratory inflammatory cDC2",
-  "21" = "Migratory LAMP3hi cDC2",
-  "22" = "Migratory inflammatory cDC2",
-  "23" = "Unassigned",
-  "24" = "Unassigned",
-  "25" = "Migratory LAMP3lo cDC2",
-  "26" = "Migratory inflammatory cDC2"
+#plot marker gene
+
+genes=read.table("ref_marker.plot.txt",sep="\t",header=F)
+genes.f=genes[which(genes$V1%in%rownames(dc.not.no_epcam)),]
+
+pdf("dc.marker.ref.pdf",6,20)
+FeaturePlot(
+  dc.not.no_epcam,
+  features = genes.f$V1,
+  ncol = 4,
+  col = c("lightyellow", "red"),
+  order = TRUE,
+  split.by = "orig.ident"
 )
 
-# Confirm all active identities have a proposed label
 
 
-# Confirm all active identities have a proposed label
-setdiff(levels(Idents(dc.not.no_epcam)), names(cluster_names))
+dev.off()
 
-# Rename active identities
-dc.not.no_epcam <- RenameIdents(dc.not.no_epcam, cluster_names)
+markerGenes <- c("CLEC9A", "XCR1", "CADM1", "CLEC10A", "FCGR2A", "FCER1A", "CD1C",
+                 "CD1A", "CD207", "LAMP3", "CCR7", "FSCN1", "GZMB", "LILRA4", "TCF4", "PPP1R14A",
+                 "AXL", "S100A8", "S100A9", "VCAN", "FCN1", "ITGAX", "HLA-DRA", "HLA-DQA1", "HLA-DQB1")
 
-# Save renamed identities as a metadata column
-dc.not.no_epcam$celltype_cluster <- as.character(Idents(dc.not.no_epcam))
+pdf("marker.dc.pdf")
+Idents(dc.not.no_epcam)=dc.not.no_epcam$integrated_snn_res.1
+VlnPlot(dc.not.no_epcam, features = markerGenes, stack = TRUE,  flip = TRUE,
+        fill.by = "ident")
 
-# Make the new labels the active identity
-Idents(dc.not.no_epcam) <- "celltype_cluster"
+dev.off()
+
 
 saveRDS(dc.not.no_epcam,"dc.singlet.rds")
+
+
+
 
 
 # dc_enteorid -------------------------------------------------------------
