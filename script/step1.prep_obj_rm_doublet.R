@@ -373,10 +373,36 @@ dev.off()
 # inspect doublet proportion by cluster
 table(Idents(DC_ent), DC_ent$doublet_status)
 
+
+
+
 # keep singlets only if wanted
 DC_ent_singlet <- subset(DC_ent, subset = doublet_status == "Singlet")
 
+
+
+Idents(DC_ent_singlet)=DC_ent_singlet$seurat_clusters
+DC_ent_singlet <- RenameIdents(
+  DC_ent_singlet,
+  `0` = "Tissue-resident inflammatory cDC2",
+  `1` = "Tissue-resident inflammatory cDC2",
+  `2` = "epi_LYZ_Low",
+  `3` = "Tissue-resident inflammatory cDC2",
+  `4` = "Tissue-resident inflammatory cDC2",
+  `5` = "epi_FABP_LYZ_High",
+  `6` = "Migratory inflammatory cDC2",
+  `7` = "epi_LYZ_Low",
+  `8` = "Migratory inflammatory cDC2",
+  `9` = " Migratory LAMP3hi cDC2",
+  `10` = "Tissue-resident inflammatory cDC2"
+)
+
+DC_ent_singlet$celltype.final=Idents(DC_ent_singlet)
+
 saveRDS(DC_ent_singlet,"DC_ent_singlet.rds")
+
+
+
 
 b2.noep<- subset(DC_ent_singlet, subset = EPCAM == 0)
 #annotate celltype
