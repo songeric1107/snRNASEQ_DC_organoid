@@ -2,7 +2,7 @@
 library(CellChat)
 library(Seurat)
 
-seu=readRDS("DC_ent_singlet.rds")
+seu=readRDS("input_fig4e.rds")
 #seu=readRDS(path)
 
 DefaultAssay(seu) <- "RNA"
@@ -34,7 +34,7 @@ saveRDS(cellchat,"dc_epi.cellchat.2026.rds")
 
 
 
-pdf("bubble.pdf",10,10)
+pdf("fig.s4b.bubble.pdf",10,10)
 netVisual_bubble(cellchat, sources.use = c(2,4), targets.use = c(1,3,5), remove.isolate = FALSE)
 #> Comparing communications on a single object
 
@@ -93,29 +93,6 @@ levels(cellchat@idents)
 # [3] "Migratory LAMP3hi cDC2"            "epi_2"                            
 # [5] "Migratory inflammatory cDC2"    
 
-pdf("fig4e.v5.pdf", width = 10, height = 10)
-
-cell.colors <- c(
-  "Migratory inflammatory cDC2"      = "orange",  # purple
-  "Tissue-resident inflammatory cDC2"  = "#D62F2F",  # red
-  "Migratory LAMP3hi cDC2"      = "purple",  # orange
-  "epi_1"                = "#45A049",  # green
-  "epi_2"                = "#3B75A5"   # blue
-)
-
-# Ensure colors follow the identity order in the CellChat object
-cell.colors <- cell.colors[levels(cellchat@idents)]
-
-netVisual_chord_gene(
-  cellchat,
-  sources.use = c(2, 4),
-  targets.use = c(1, 3, 5),
-  lab.cex = 0.8,thresh=0.01,
-  color.use   = cell.colors, legend.pos.x = 1.4,
-legend.pos.y = 5)
-dev.off()
-
-
 
 df_all <- subsetCommunication(
   cellchat,
@@ -132,7 +109,7 @@ df_filtered <- subset(df_all, prob >= 0.01 & pval <= 0.01)   # tune 0.02 based o
 
 
 
-pdf("fig4e.v7.pdf", width = 10, height = 10)
+pdf("fig4e.pdf", width = 10, height = 10)
 
 cell.colors <- c(
   "Migratory inflammatory cDC2"      = "orange",  # purple
