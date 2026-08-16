@@ -13,7 +13,7 @@ gene <- c(
   "CD1C", "HLA-DRA", "CLEC10A", "ITGAX"
 )
 
-FeaturePlot_scCustom(integrated,features=gene)
+FeaturePlot_scCustom(obj,features=gene)
 #,cols = viridis::viridis(100))
 dev.off()
 

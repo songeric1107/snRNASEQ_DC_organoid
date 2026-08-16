@@ -133,11 +133,6 @@ most_expressed3 <- order(apply(C3, 1, median), decreasing = T)[20:1]
 
 pdf("top10.express.pdf")
 par(mar = c(4, 8, 2, 1))
-boxplot(as.matrix(t(C[most_expressed, ])), cex = 0.1, las = 1, xlab = "% total count per cell (naive)",
-        col = (scales::hue_pal())(20)[20:1], horizontal = TRUE)
-
-boxplot(as.matrix(t(C2[most_expressed2, ])), cex = 0.1, las = 1, xlab = "% total count per cell(DC)",
-        col = (scales::hue_pal())(20)[20:1], horizontal = TRUE)
 
 boxplot(as.matrix(t(C3[most_expressed3, ])), cex = 0.1, las = 1, xlab = "% total count per cell(DC2)",
         col = (scales::hue_pal())(20)[20:1], horizontal = TRUE)
@@ -232,7 +227,7 @@ markerGenes <- c("CLEC9A", "XCR1", "CADM1", "CLEC10A", "FCGR2A", "FCER1A", "CD1C
                  "AXL", "S100A8", "S100A9", "VCAN", "FCN1", "ITGAX", "HLA-DRA", "HLA-DQA1", "HLA-DQB1")
 
 pdf("marker.dc.pdf")
-Idents(dc.not.no_epcam)=dc.not.no_epcam$integrated_snn_res.1
+
 VlnPlot(dc.not.no_epcam, features = markerGenes, stack = TRUE,  flip = TRUE,
         fill.by = "ident")
 
@@ -271,7 +266,7 @@ dev.off()
 
 
 DC_ent <- RunPCA(object = DC_ent,
-             pc.genes = DC@var.genes,
+             pc.genes = DC_ent@var.genes,
              do.print = TRUE,
              pcs.print = 1:5,
              genes.print = 5)
@@ -393,7 +388,7 @@ DC_ent_singlet <- RenameIdents(
   `6` = "Migratory inflammatory cDC2",
   `7` = "epi_LYZ_Low",
   `8` = "Migratory inflammatory cDC2",
-  `9` = " Migratory LAMP3hi cDC2",
+  `9` = "Migratory LAMP3hi cDC2",
   `10` = "Tissue-resident inflammatory cDC2"
 )
 
