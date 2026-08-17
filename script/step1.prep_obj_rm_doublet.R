@@ -236,10 +236,49 @@ dev.off()
 
 saveRDS(dc.not.no_epcam,"dc.singlet.rds")
 
+Idents(dc.not.no_epcam) <- "seurat_clusters"
+
+dc.not.no_epcam <- RenameIdents(
+  dc.not.no_epcam,
+  `0`  = "Tissue-resident regulatory cDC2",
+  `1`  = "Migratory LAMP3int cDC2",
+  `2`  = "Tissue-resident inflammatory cDC2",
+  `3`  = "Tissue-resident inflammatory cDC2",
+  `4`  = "Tissue-resident inflammatory cDC2",
+  `5`  = "Tissue-resident regulatory cDC2",
+  `6`  = "Tissue-resident inflammatory cDC2",
+  `7`  = "Tissue-resident inflammatory cDC2",
+  `8`  = "Tissue-resident inflammatory cDC2",
+  `9`  = "Tissue-resident inflammatory cDC2",
+  `10` = "Migratory LAMP3hi cDC2",
+  `11` = "Migratory LAMP3hi cDC2",
+  `12` = "Tissue-resident inflammatory cDC2",
+  `13` = "Tissue-resident inflammatory cDC2",
+  `14` = "Migratory LAMP3hi cDC2",
+  `15` = "Migratory LAMP3hi cDC2",
+  `16` = "Tissue-resident inflammatory cDC2",
+  `17` = "Migratory LAMP3lo cDC2",
+  `18` = "Migratory LAMP3hi cDC2",
+  `19` = "Tissue-resident inflammatory cDC2",
+  `20` = "Migratory inflammatory cDC2",
+  `21` = "Migratory LAMP3hi cDC2",
+  `22` = "Migratory inflammatory cDC2",
+  `23` = "Undefined DCs",
+  `24` = "Tissue-resident inflammatory cDC2",
+  `25` = "Migratory LAMP3lo cDC2",
+  `26` = "Migratory inflammatory cDC2"
+)
+
+# Store the renamed identities in metadata
+dc.not.no_epcam$cluster_annot.renamed <- Idents(dc.not.no_epcam)
+
+table(
+  dc.not.no_epcam$seurat_clusters,
+  dc.not.no_epcam$cluster_annot.renamed
+)
 
 
-
-
+saveRDS(dc.not.no_epcam,"input_fig1.rds")
 # dc_enteorid -------------------------------------------------------------
 
 
@@ -342,9 +381,7 @@ DC_ent <- doubletFinder(
   sct = FALSE
 )
 
-# ----------------------------
-# 3. Run DoubletFinder
-# ----------------------------
+-------
 
 # ----------------------------
 # 4. Find result columns
@@ -367,8 +404,6 @@ dev.off()
 
 # inspect doublet proportion by cluster
 table(Idents(DC_ent), DC_ent$doublet_status)
-
-
 
 
 # keep singlets only if wanted

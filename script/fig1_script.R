@@ -22,7 +22,7 @@ library(dplyr)
 set.seed(1234)
 
 
-dc.not=readRDS("dc.input.fig1.rds")
+dc.not=readRDS("input_fig1.rds")
 library(scCustomize)
 celltype <- levels(Idents(dc.not))
 
@@ -291,7 +291,7 @@ gene.dc3=c("CD81", "S100A9", "S100A8", "MRC1", "CD1C", "CD1B", "CD1A", "ANXA1",
            "CCL22", "IL18", "APOC1",  "FABP4", "MMP9", "SOD2", "UPP1", 
            "RALA", "EMP3", "JUN", "KLF6", "ATF3", "CXCL8")
 
-pdf("alldc.dot.gene.pdf",15,5)
+pdf("fig.s1.gene.dotplot.pdf",15,5)
 DotPlot_scCustom(dc.not,features=unique(c(gene.dc2,gene.dc3)))+ theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
 #+ coord_flip()
 

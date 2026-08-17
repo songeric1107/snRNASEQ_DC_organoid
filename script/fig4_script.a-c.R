@@ -4,7 +4,7 @@ library(SeuratData)
 library(cowplot)
 
 #library(DoubletFinder)
-
+library(scCustomize)
 Sys.setenv("R_C_STACK_LIMIT" = 500000)
 suppressMessages(library(SeuratWrappers))
 suppressMessages(library("dplyr"))
@@ -21,39 +21,26 @@ library(dplyr)
 # Set seed for reproducibility
 set.seed(1234)
 
-monodc=readRDS("mono.dc.only.rds")
+monodc=readRDS("/Volumes/projects-t3/BTRAN/analysis/bma_project/snrna_bing_1106/github_script/data/input_fig4a_c.rds")
 
-Idents(monodc)=monodc$celltype_cluster
-
+Idents(monodc)=monodc$celltype_final
 
 cols_dc <- c(
-  "Tissue−resident inflammatory cDC2" = "#C17C9B",
-  "Migratory inflammatory cDC2" = "#9E9E9E",
-  "Undefined DCs" = "black",
-  "Migratory LAMP3hi cDC2" = "#C9D7E3"
-  # "Tissue-resident regulatory cDC2" = "#6FA8DC",
-  #"Migratory LAMP3lo cDC2" = "#6B3F4F",
-  #"Migratory LAMP3int cDC2" = "#2F6DB3"
+  "Tissue-resident inflammatory cDC2" = "#C17C9B",
+  "Migratory inflammatory cDC2"       = "#9E9E9E",
+  "Migratory LAMP3hi cDC2"            = "#C9D7E3",
+  "Undefined DCs"                     = "black"
 )
 
+setdiff(levels(monodc$celltype_final), names(cols_dc))
+# character(0)
 pdf("monodc.2026.pdf",6,5)
 DimPlot_scCustom(monodc,colors_use = cols_dc,label=F)
 dev.off()
 
 monodc$cluster_annot.new3=Idents(monodc)
 
-# 
-# monodc.split.meta <- all.not@meta.data[
-#   which(all.not@meta.data$type == "Monol.+DC"),]
-# rownames( monodc.split.meta)=gsub("_1","",rownames( monodc.split.meta))
-# rownames( monodc.split.meta)=gsub("_2","",rownames( monodc.split.meta))
-# 
-# match(rownames(monodc@meta.data),rownames(monodc.split.meta))
-# 
-# m1=monodc@meta.data
-# m2=monodc.split.meta
-# 
-# m12=merge(m1,m2[,c(1,12)],by=0,all=T)
+
 
 
 pdf("fig4b.gene.monoDC.pdf", width = 8, height = 8)
@@ -73,14 +60,14 @@ dev.off()
 
 
 
-monodc$cluster_annot.new3=monodc$celltype_cluster
+monodc$cluster_annot.new3=monodc$celltype_final
 
 # Find neighbors and clusters
-Idents(monodc)=monodc$cluster_annot.new3
+Idents(monodc)=monodc$celltype_final
 expr <- GetAssayData(monodc, layer = "data", assay = "RNA")  # normalized log data
 
 
-cell_types <- monodc$cluster_annot.new3
+cell_types <- monodc$celltype_final
 
 
 # Filter expression data

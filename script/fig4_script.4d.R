@@ -1,6 +1,6 @@
 
 
-obj=readRDS("rename_epi.dc.330.2026(input_4d).rds")
+obj=readRDS("input_fig4d.rds")
 obj$celltype.final=gsub("epi_LYZ_Low","Epithelial 2",obj$celltype.final)
 
 obj$celltype.final=gsub("epi_FABP_LYZ_High","Epithelial 1",obj$celltype.final)
@@ -18,7 +18,7 @@ FeaturePlot_scCustom(obj,features=gene)
 dev.off()
 
 
-#saveRDS(integrated,"input_fig4d.rds")
+
 
 
 
